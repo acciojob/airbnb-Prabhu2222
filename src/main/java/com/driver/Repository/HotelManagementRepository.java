@@ -35,8 +35,9 @@ public class HotelManagementRepository {
         for(String name:hotelDb.keySet()){
             Hotel hotelObj=hotelDb.get(name);
             if(hotelObj.getFacilities().size()>=1){
-                if(hotelObj.getFacilities().size()>=max_facility){
-                    max_facility=hotelObj.getFacilities().size();
+                Set<Facility> fac_list=new HashSet<>(hotelObj.getFacilities());
+                if(fac_list.size()>=max_facility){
+                    max_facility=fac_list.size();
                     list.add(name);
                 }
             }
@@ -58,15 +59,14 @@ public class HotelManagementRepository {
         userBookingsDb.put(adharNo,new ArrayList<Booking>());
         userBookingsDb.get(adharNo).add(booking);
 
-        int noOfRoomTryingToBook=booking.getNoOfRooms();
-        String hotelNameTryingToBook=booking.getHotelName();
-        int noOfRoomAvailableInTheHotel=hotelDb.get(hotelNameTryingToBook).getAvailableRooms();
-        if(noOfRoomTryingToBook>noOfRoomAvailableInTheHotel) return -1;
-
         String id= String.valueOf(UUID.randomUUID());
         booking.setBookingId(id);
         bookingDb.put(id,booking);
 
+        int noOfRoomTryingToBook=booking.getNoOfRooms();
+        String hotelNameTryingToBook=booking.getHotelName();
+        int noOfRoomAvailableInTheHotel=hotelDb.get(hotelNameTryingToBook).getAvailableRooms();
+        if(noOfRoomTryingToBook>noOfRoomAvailableInTheHotel) return -1;
 
 
         int amount=noOfRoomTryingToBook*hotelDb.get(hotelNameTryingToBook).getPricePerNight();
