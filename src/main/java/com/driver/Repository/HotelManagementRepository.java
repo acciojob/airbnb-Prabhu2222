@@ -54,7 +54,9 @@ public class HotelManagementRepository {
         //Calculate the total amount paid by the person based on no. of rooms booked and price of the room per night.
         //If there arent enough rooms available in the hotel that we are trying to book return -1
         //in other case return total amount paid
-
+        int adharNo=booking.getBookingAadharCard();
+        userBookingsDb.put(adharNo,new ArrayList<Booking>());
+        userBookingsDb.get(adharNo).add(booking);
 
         int noOfRoomTryingToBook=booking.getNoOfRooms();
         String hotelNameTryingToBook=booking.getHotelName();
@@ -64,9 +66,8 @@ public class HotelManagementRepository {
         String id= String.valueOf(UUID.randomUUID());
         booking.setBookingId(id);
         bookingDb.put(id,booking);
-        int adharNo=booking.getBookingAadharCard();
-        userBookingsDb.put(adharNo,new ArrayList<Booking>());
-        userBookingsDb.get(adharNo).add(booking);
+
+
 
         int amount=noOfRoomTryingToBook*hotelDb.get(hotelNameTryingToBook).getPricePerNight();
         return amount;
