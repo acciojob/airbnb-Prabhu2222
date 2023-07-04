@@ -55,6 +55,13 @@ public class HotelManagementRepository {
         //Calculate the total amount paid by the person based on no. of rooms booked and price of the room per night.
         //If there arent enough rooms available in the hotel that we are trying to book return -1
         //in other case return total amount paid
+
+
+        int noOfRoomTryingToBook=booking.getNoOfRooms();
+        String hotelNameTryingToBook=booking.getHotelName();
+        int noOfRoomAvailableInTheHotel=hotelDb.get(hotelNameTryingToBook).getAvailableRooms();
+        if(noOfRoomTryingToBook>noOfRoomAvailableInTheHotel) return -1;
+
         int adharNo=booking.getBookingAadharCard();
         userBookingsDb.put(adharNo,new ArrayList<Booking>());
         userBookingsDb.get(adharNo).add(booking);
@@ -63,10 +70,9 @@ public class HotelManagementRepository {
         booking.setBookingId(id);
         bookingDb.put(id,booking);
 
-        int noOfRoomTryingToBook=booking.getNoOfRooms();
-        String hotelNameTryingToBook=booking.getHotelName();
-        int noOfRoomAvailableInTheHotel=hotelDb.get(hotelNameTryingToBook).getAvailableRooms();
-        if(noOfRoomTryingToBook>noOfRoomAvailableInTheHotel) return -1;
+        //updating th available room in corresponding hotel
+        Hotel hotelObj=hotelDb.get(hotelNameTryingToBook);
+        hotelObj.setAvailableRooms(hotelObj.getAvailableRooms()-noOfRoomTryingToBook);
 
 
         int amount=noOfRoomTryingToBook*hotelDb.get(hotelNameTryingToBook).getPricePerNight();
@@ -85,13 +91,15 @@ public class HotelManagementRepository {
         //Note that newFacilities can also have duplicate facilities possible
         Set<Facility> set=new HashSet<>(newFacilities);
         Hotel hotelObj=hotelDb.get(hotelName);
+        List<Facility> toBeAdded=new ArrayList<>(hotelObj.getFacilities());
         for(Facility ele:set){
             if(hotelObj.getFacilities().contains(ele)){
                 //donothin
             }else{
-                hotelObj.getFacilities().add(ele);
+                toBeAdded.add(ele);
             }
         }
+        hotelObj.setFacilities(toBeAdded);
         return hotelObj;
     }
 }
