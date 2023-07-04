@@ -66,7 +66,7 @@ public class HotelManagementRepository {
         if(noOfRoomTryingToBook>noOfRoomAvailableInTheHotel) return -1;
 
         int adharNo=booking.getBookingAadharCard();
-        userBookingsDb.put(adharNo,new ArrayList<Booking>());
+        userBookingsDb.putIfAbsent(adharNo,new ArrayList<Booking>());
         userBookingsDb.get(adharNo).add(booking);
 
         String id= String.valueOf(UUID.randomUUID());
