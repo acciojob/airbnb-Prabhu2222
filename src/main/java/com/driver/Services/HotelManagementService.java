@@ -12,8 +12,8 @@ import java.util.List;
 
 @Service
 public class HotelManagementService {
-    @Autowired
-    HotelManagementRepository hotelManagementRepository;
+//    @Autowired
+    HotelManagementRepository hotelManagementRepository=new HotelManagementRepository();
 
     public String addHotel(Hotel hotel) {
         //incase the hotelName is null or the hotel Object is null return an empty a FAILURE
