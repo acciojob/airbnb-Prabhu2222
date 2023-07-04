@@ -35,13 +35,14 @@ public class HotelManagementRepository {
         for(String name:hotelDb.keySet()){
             Hotel hotelObj=hotelDb.get(name);
             if(hotelObj.getFacilities().size()>=1){
-                if(hotelObj.getFacilities().size()>=max_facility){
+                if(hotelObj.getFacilities().size()>max_facility){
                     max_facility=hotelObj.getFacilities().size();
                     list.clear();
                     list.add(name);
                 }
-            }else if(hotelObj.getFacilities().size()==max_facility ){
-                list.add(name);
+                else if(hotelObj.getFacilities().size()==max_facility ){
+                    list.add(name);
+                }
             }
         }
         if(list.size()==0) return "";
